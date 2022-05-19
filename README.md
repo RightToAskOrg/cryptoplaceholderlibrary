@@ -25,7 +25,7 @@ C_0 = (g^R \text{ mod } p, K^R \text{ mod } p).
 
 Encryption of one is
 
-$$ C_0 = (g^R \text{ mod } p, g . K^R \text{ mod } p).$$
+$$ C_1 = (g^R \text{ mod } p, g . K^R \text{ mod } p).$$
 
 **CJC: I thought it was supposed to be Exponential ElGamal?**
 
