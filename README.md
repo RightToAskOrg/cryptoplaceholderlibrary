@@ -17,9 +17,11 @@ TODO: Consider whether according with EG spec is worth doubling the work.
 
 ###El Gamal encryption, exponential form
 
-An El Gamal encryption of a zero is computed from public key $K$ and parameters $(g,p,q)$ by selecting R with $0 \leq R < q$ and setting
+An El Gamal encryption of a zero is computed from public key $K$ and parameters $(g,p,q)$ by selecting R with $`0 \leq R < q`$ and setting
 
-$$ C_0 = (g^R \text{ mod } p, K^R \text{ mod } p).$$
+```math
+C_0 = (g^R \text{ mod } p, K^R \text{ mod } p).
+```
 
 Encryption of one is
 
