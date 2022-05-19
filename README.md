@@ -89,5 +89,5 @@ PublicKeyObject:
  
  Most of the hashing, randomness, etc is internal.
  
- 
+ Format: https://github.com/microsoft/electionguard-cpp/blob/32b55893c3eb997529088b5470270ee0f0b91dd9/src/electionguard/serialize.hpp#L983
  
