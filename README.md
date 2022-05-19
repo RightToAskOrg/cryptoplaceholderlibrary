@@ -27,7 +27,7 @@ Encryption of one is
 
 $$ C_1 = (g^R \text{ mod } p, g . K^R \text{ mod } p).$$
 
-**CJC: I thought it was supposed to be Exponential ElGamal?**
+
 
 Implemented in EG [here](https://github.com/microsoft/electionguard-cpp/blob/main/bindings/netstandard/ElectionGuard/ElectionGuard.Encryption/ElGamal.cs).
 
@@ -80,3 +80,14 @@ PublicKeyObject:
   - q
  ```
  It needs to define what parameters will be passed in and what object/values will be returned. Depending on how it is currently implemented it might be easy to just replace with a single method as above, or if it currently calls multiple methods in ElectionGuard then the granularity of of the method calls could be increased to match.
+ 
+ Questions:
+ 
+ - EG has two different CP versions - one with an explicit seed and one without. Which one do we need?
+ - How does the client receive the server public key? In what format?
+ - What will the format for the returned ballot including proofs and ciphertexts be?
+ 
+ Most of the hashing, randomness, etc is internal.
+ 
+ 
+ 
