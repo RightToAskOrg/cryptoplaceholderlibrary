@@ -25,6 +25,7 @@ Encryption of one is
 
 $$ C_0 = (g^R \text{ mod } p, g . K^R \text{ mod } p).$$
 
+**CJC: I thought it was supposed to be Exponential ElGamal?**
 
 Implemented in EG [here](https://github.com/microsoft/electionguard-cpp/blob/main/bindings/netstandard/ElectionGuard/ElectionGuard.Encryption/ElGamal.cs).
 
@@ -54,3 +55,26 @@ The obvious simplification for our ballots, which would make us noncompliant wit
 - a ciphertext C for the chosen selection: 1 for 'selected' and 0 for 'not selected.'
 - a Chaum-Pedersen proof, for   C, that it contains either a 0 or a 1.
 
+## Interface Requirements
+In terms of defining the interface, what is required is the actual method signatures, as this will define where the parameters are coming from. For example:
+
+`BallotObj createBallot(PublicKeyObject, Choice(Boolean))`
+
+### Objects
+```
+BallotObject:
+  - Ciphertext C
+  - Ciphertext P
+  - Proof C
+  - Proof P
+  - Proof C.P
+Choice:
+  - True for 1
+  - False for 0
+PublicKeyObject:
+  - g
+  - pk
+  - p
+  - q
+ ```
+ It needs to define what parameters will be passed in and what object/values will be returned. Depending on how it is currently implemented it might be easy to just replace with a single method as above, or if it currently calls multiple methods in ElectionGuard then the granularity of of the method calls could be increased to match.
