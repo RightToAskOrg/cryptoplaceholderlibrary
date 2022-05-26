@@ -108,10 +108,10 @@ Use BouncyCastle BigInteger class
 The following shows EG ballot formats, from an example EG ballot, with annotations about how they'd correspond to RTA data. Candidates correspond to questions, which get either up-voted (+1) or not (0). We could coalesce a person's up/dismiss votes in several ways:
 
 1. make each ballot a single contest with a single 'candidate' i.e. question
-2. make each ballot a single contest with multiple 'candidates' i.e. questions
-3. make each ballot multiple contests, each with a single 'candidate' i.e. question (this seems the most wasteful and is not mentioned below).
+2. make each ballot a single contest with multiple 'candidates' i.e. questions (CJC points out that this is likely to make trouble, because it will be very hard to add candidates later. 
+3. make each ballot multiple contests, each with a single 'candidate' i.e. question (this seems like a good way to do it).
 
-The example below shows case (2) with two 'candidates' i.e. questions and two corresponding placeholders.
+The example below shows case (2) with two 'candidates' i.e. questions and two corresponding placeholders. TODO redo so that we're using a case 3 example rather than case 2.
 
 ```javascript
 {
@@ -211,3 +211,7 @@ This would take somewhat less than half the data size and work to produce.
 All the rest of the ballot structure, including the array of contests and the ballot selections, would stay the same. (It's unclear how much we need the various hash values, most of which I don't fully understand, but they're probably harmless and it's nice to get EG verifiers to work). 
 
 This would mean that an EG verifier would almost work, but we'd have to suppress the warning that the accumulation proof failed. (We may not be the only ones.)
+
+Note also that the server-side decryption would probably also break, assuming that the servers / guardians verify ballot validity before they decrypt. So this seems like a bad choice.
+
+
