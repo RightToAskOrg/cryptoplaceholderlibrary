@@ -120,13 +120,13 @@ The example below shows case (2) with two 'candidates' i.e. questions and two co
   "manifest_hash": "C2DB999CFEC53C050F14E776A4203BAAC1E76E1A959C7281A63C2EC110D3B87D",  // Not sure what this is - possibly for auditing and therefore not needed?
   "code_seed": "A8C60067311F4A9E98936B1E1FD4DC6F9EF15EA61288B1E46BC444617F9DF636",      // Not sure what this is
   "contests": [                                        // Need to decide whether a person's collected up/dismiss votes should be gathered into one ballot with multiple
-    {                                                  // contests, or separated into single-contest ballots
-      "object_id": "justice-supreme-court",            // This object_id would be redundant. However, we could alternatively use the RTA question_id here instead of per-candidate
+    {                                                  // contests, or separated into single-contest ballots. Suggest case 2: one contest with many candidates.
+      "object_id": "justice-supreme-court",            // This object_id would be redundant. However (case 1), we could alternatively use the RTA question_id here instead of per-candidate
       "sequence_order": 0,                             // We would never have more than one contest per ballot (except with case 3, which seems silly).
       "description_hash": "DFE30A201F1842B73522980854D7814C8B688698E6EF33533616C31F038067EF",   // Not sure what this is
       "ballot_selections": [
         {
-          "object_id": "john-adams-selection",         // selection ID: object_id == RTA question_id
+          "object_id": "john-adams-selection",         // Important: object_id == RTA question_id
           "sequence_order": 0,                         // Depending on whether we opt for case 1 or case 2, we may have either two objects (a real one and a placeholder)
                                                        // or multiple pairs (case 2)
           "description_hash": "A26D9AC2530AB54774A1FF11F4FD77F6A527AFCDF44A05A8BFBBC299A081984F",   // Not sure what this is
@@ -159,7 +159,7 @@ The example below shows case (2) with two 'candidates' i.e. questions and two co
           // [A lot more data left out - same format as previous object]
         },
         {
-          "object_id": "justice-supreme-court-2-placeholder",   // We need a placeholder for each 'real' ciphertext. Each is a real ciphertext, same format as others.
+          "object_id": "justice-supreme-court-2-placeholder",   // We need a placeholder for each 'real' ciphertext. Each is a ciphertext, same format as others.
           "sequence_order": 2,
           // [A lot more data left out - same format as previous object]
           "is_placeholder_selection": true,
@@ -198,6 +198,16 @@ The example below shows case (2) with two 'candidates' i.e. questions and two co
 }
 ```
 
+Thoughts about this: we end up with twice as many ciphertexts as we need, because we'd need a placeholder for every real ciphertext. The placeholders don't really do anything for RTA - we don't need them except for EG compliance.
+
+Brainstorming alternative options: We could consider having no placeholders, but instead insisting that half of the votes be dismiss-votes. Then the constant in the accumulation proof is always half the number of ciphertexts. This is great for privacy but the usability is awful. Alternatively, we could allow any accumulation constant, and thus reveal the number of up-votes, but not which ones they were. This is great for usability but awful for privacy.
 
 ***Option 2: Break EG format; use one ciphertext per up-vote***
-TODO - presumably just use one item from their ballot_selections array. This would use somewhat less than half the data size and work to produce.
+
+Alternatively, we could omit all the placeholders, the accumulation ciphertext and the proof that the accumulation is a particular value.
+
+This would take somewhat less than half the data size and work to produce.
+
+All the rest of the ballot structure, including the array of contests and the ballot selections, would stay the same. (It's unclear how much we need the various hash values, most of which I don't fully understand, but they're probably harmless and it's nice to get EG verifiers to work). 
+
+This would mean that an EG verifier would almost work, but we'd have to suppress the warning that the accumulation proof failed. (We may not be the only ones.)
